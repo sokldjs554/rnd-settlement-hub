@@ -11,6 +11,8 @@ import os
 os.environ.setdefault(
     "DATABASE_URL", "postgresql+psycopg://dev:dev@localhost:5432/settlement_hub_test"
 )
+# HS256 권장 키 길이(32바이트+)를 충족하는 테스트 전용 시크릿
+os.environ.setdefault("SECRET_KEY", "test-secret-key-0123456789abcdef0123456789abcdef")
 
 from collections.abc import Generator  # noqa: E402
 from pathlib import Path  # noqa: E402
@@ -18,13 +20,21 @@ from pathlib import Path  # noqa: E402
 import pytest  # noqa: E402
 from alembic import command  # noqa: E402
 from alembic.config import Config  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
 from sqlalchemy import text  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
+from app.core.security import hash_password  # noqa: E402
 from app.db import SessionLocal, engine  # noqa: E402
-from app.models import Base  # noqa: E402
+from app.main import app  # noqa: E402
+from app.models import Base, User  # noqa: E402
+from app.models.enums import UserRole  # noqa: E402
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
+
+# 테스트 사용자 공통 비밀번호. bcrypt는 느리므로 해시를 1회만 계산해 재사용한다.
+TEST_PASSWORD = "test-password-1"
+TEST_PASSWORD_HASH = hash_password(TEST_PASSWORD)
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -53,3 +63,25 @@ def db() -> Generator[Session, None, None]:
         table_names = ", ".join(t.name for t in Base.metadata.sorted_tables)
         with engine.begin() as conn:
             conn.execute(text(f"TRUNCATE {table_names} RESTART IDENTITY CASCADE"))
+
+
+@pytest.fixture
+def client(db: Session) -> Generator[TestClient, None, None]:
+    """API 테스트 클라이언트. 앱과 테스트가 같은 테스트 DB를 바라본다."""
+    with TestClient(app) as c:
+        yield c
+
+
+def create_account(db: Session, *, email: str, role: UserRole) -> User:
+    """API 테스트용 계정 생성 (비밀번호는 TEST_PASSWORD)."""
+    user = User(email=email, password_hash=TEST_PASSWORD_HASH, name="테스트", role=role)
+    db.add(user)
+    db.commit()
+    return user
+
+
+def login_headers(client: TestClient, email: str) -> dict[str, str]:
+    """로그인 후 Authorization 헤더를 만든다."""
+    res = client.post("/api/v1/auth/login", json={"email": email, "password": TEST_PASSWORD})
+    assert res.status_code == 200, res.text
+    return {"Authorization": f"Bearer {res.json()['access_token']}"}
