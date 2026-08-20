@@ -1,2 +1,22 @@
+# env / secrets
 .env
 .env.local
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# uploads (증빙 파일 로컬 저장소)
+uploads/
+
+# node (Phase 5)
+node_modules/
+.next/
+
+# misc
+.DS_Store

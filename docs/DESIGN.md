@@ -148,7 +148,7 @@ erDiagram
     projects ||--o{ expenses : ""
     projects ||--o{ reports : ""
     expenses ||--o{ evidences : "증빙"
-    expenses ||--o{ ai_extractions : "AI 결과"
+    expenses ||--o{ ai_runs : "AI 결과"
     expenses ||--o{ validation_results : "룰 결과"
     expenses ||--o{ approvals : "승인 이력"
     expenses ||--o{ automation_runs : "파이프라인 실행"
@@ -160,7 +160,7 @@ erDiagram
     budgets { int id PK "UNIQUE(project,category), amount" }
     expenses { int id PK "status ENUM, category, 금액/일자/거래처, deleted_at" }
     evidences { int id PK "file_path, mime, size" }
-    ai_extractions { int id PK "output_json JSONB, confidence, prompt_version" }
+    ai_runs { int id PK "output_json JSONB, confidence, prompt_version" }
     validation_results { int id PK "rule_code, severity ENUM" }
     vendor_checks { int id PK "biz_no, b_stt 캐시, checked_at" }
     approvals { int id PK "action ENUM, comment" }
@@ -175,7 +175,7 @@ erDiagram
 - **비목 ENUM** (혁신법 연구개발비 사용기준 직접비 기준): `인건비, 학생인건비, 연구시설·장비비, 연구재료비,
   연구활동비, 연구수당, 위탁연구개발비, 국제공동연구개발비, 간접비`. 인건비 계열은 스키마엔 존재하되
   MVP 워크플로(참여율)는 범위 밖 — 예산 테이블에는 잡히므로 대시보드 집계는 가능.
-- **AI 결과와 인간 판단 분리**: AI 제안은 `ai_extractions`에만 저장. `expenses.category`는 항상 사람이 확정한 값.
+- **AI 결과와 인간 판단 분리**: AI 제안은 `ai_runs`에만 저장. `expenses.category`는 항상 사람이 확정한 값.
   → "AI가 틀리면?"에 대한 구조적 답.
 - **`expenses.status` 상태 머신**:
   `DRAFT → SUBMITTED → VALIDATING → NEEDS_REVIEW → APPROVED | REJECTED`, `REJECTED → DRAFT`(재작성),
@@ -242,7 +242,7 @@ Claude API(`anthropic` Python SDK), 모델은 `AI_MODEL` env(기본 `claude-opus
 - AI 추출값은 **판정하지 않는다** — "추출값 vs 입력값 불일치" 판정은 결정론적 룰 엔진이 수행. AI는 데이터 공급자.
 - 최종 비목은 항상 사람이 확정. AI 제안-확정 일치율(채택률)을 대시보드 지표로 노출 → AI 품질을 계속 감시.
 - confidence 낮음/추출 실패 → 자동 통과 없음, 검토 필수 플래그.
-- 모든 호출을 `ai_extractions`에 기록(모델, prompt_version, 출력 JSON, latency). 프롬프트는 코드로 버전 관리하고
+- 모든 호출을 `ai_runs`에 기록(모델, prompt_version, 출력 JSON, latency). 프롬프트는 코드로 버전 관리하고
   **골든 케이스**(샘플 증빙 + 기대 추출값)로 프롬프트 변경 시 회귀 테스트.
 - 타임아웃·재시도(1회)·에러 유형별 처리(SDK 타입 예외), API 장애 시에도 워크플로는 진행(성능 저하 모드).
 
@@ -284,8 +284,8 @@ submit → automation_runs 큐 등록(idempotent) → 워커 선점(SKIP LOCKED)
 | R-VND-003 | 사업자 상태 미확인(API 장애) | WARN | 국세청 API 실패 |
 | R-DUP-001 | 중복 집행 의심(과제+거래처+금액+일자 동일) | WARN | expenses |
 | R-DAY-001 | 주말·공휴일 집행 | WARN | 공휴일 테이블(특일 API) |
-| R-AI-001 | AI 추출 실패·신뢰도 낮음 → 수기 대조 필요 | WARN | ai_extractions |
-| R-CAT-001 | AI 제안 비목 ≠ 선택 비목 | WARN | ai_extractions vs 입력 |
+| R-AI-001 | AI 추출 실패·신뢰도 낮음 → 수기 대조 필요 | WARN | ai_runs |
+| R-CAT-001 | AI 제안 비목 ≠ 선택 비목 | WARN | ai_runs vs 입력 |
 
 룰은 순수 함수(입력: 집행 건 스냅샷+컨텍스트 → 출력: 결과 목록)로 구현해 단위 테스트를 집중 배치.
 FAIL은 승인 차단이 아니라 **차단 권고**(담당자가 사유 입력 후 override 가능 — 현실 업무엔 예외가 있으므로, override는 audit log에 남음).
@@ -324,7 +324,7 @@ FAIL은 승인 차단이 아니라 **차단 권고**(담당자가 사유 입력 
 | 1 | P1–P2 확정, 뼈대 | 이 문서 승인, 모노레포 구조, Docker Compose, CI 뼈대 |
 | 2 | P3 DB/API | Alembic 마이그레이션 전체, REST 스펙 확정, 인증+RBAC |
 | 3–4 | P4 Backend | 집행 CRUD·업로드·상태 머신·룰 엔진·국세청 연동·DB 큐 워커 |
-| 5 | P6 AI | 구조화·비목 제안·폴백·ai_extractions·골든 케이스 |
+| 5 | P6 AI | 구조화·비목 제안·폴백·ai_runs·골든 케이스 |
 | 6–7 | P5 Frontend | 목록/등록/검토 화면, 대시보드, 알림 — 에러·로딩·빈 상태 포함 |
 | 8 | P4/P5 마무리 | 보고서 생성·확정, 시드+데모 시나리오 |
 | 9 | P7–P9 | 테스트 보강·E2E, 배포 설정, README·문서 완성 (버퍼 포함) |

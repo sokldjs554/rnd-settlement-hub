@@ -15,12 +15,15 @@ Claude Code는 매 세션 이 파일을 먼저 읽는다.
 ## 실행 명령
 
 ```bash
-# (Phase 4~5 진행하면서 채울 것)
-# 개발 서버:
-# 테스트:
-# 린트:
-# 마이그레이션:
-# Docker:
+# ─ Backend (backend/ 디렉토리에서, .venv 가상환경 사용) ─
+# 개발 서버:     uvicorn app.main:app --reload
+# 테스트:        pytest            # DATABASE_URL로 settlement_hub_test DB 필요
+# 린트:          ruff check . && mypy app
+# 마이그레이션:  alembic upgrade head
+# 마이그레이션 생성: alembic revision --autogenerate -m "메시지"
+
+# ─ 전체 스택 ─
+# Docker:        docker compose up --build   # postgres + api (worker/frontend는 Phase 4/5에서 추가)
 ```
 
 ---
