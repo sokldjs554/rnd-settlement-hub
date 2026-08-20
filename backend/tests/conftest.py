@@ -6,6 +6,7 @@ SQLite 대체 없이 실 DB를 쓰는 이유: JSONB, native enum, FOR UPDATE SKI
 """
 
 import os
+import tempfile
 
 # app 모듈 import 전에 테스트 DB URL을 고정한다 (app.db가 import 시점에 엔진을 만든다)
 os.environ.setdefault(
@@ -13,6 +14,8 @@ os.environ.setdefault(
 )
 # HS256 권장 키 길이(32바이트+)를 충족하는 테스트 전용 시크릿
 os.environ.setdefault("SECRET_KEY", "test-secret-key-0123456789abcdef0123456789abcdef")
+# 증빙 업로드는 임시 디렉토리에 저장
+os.environ.setdefault("UPLOAD_DIR", tempfile.mkdtemp(prefix="settlement-hub-test-uploads-"))
 
 from collections.abc import Generator  # noqa: E402
 from pathlib import Path  # noqa: E402
