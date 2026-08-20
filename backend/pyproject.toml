@@ -18,6 +18,8 @@ dependencies = [
     "bcrypt>=4.1",
     # 외부 공공 API 호출 (국세청 사업자 상태조회 등)
     "httpx>=0.27",
+    # Claude API — 증빙 구조화·비목 제안·보고서 서술 초안
+    "anthropic>=0.125",
 ]
 
 [project.optional-dependencies]
@@ -57,3 +59,8 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# golden 마커(실제 Claude API 호출)는 기본 실행에서 제외 — pytest -m golden 으로 opt-in
+addopts = "-m 'not golden'"
+markers = [
+    "golden: 실제 Claude API를 호출하는 프롬프트 회귀 테스트 (ANTHROPIC_API_KEY 필요)",
+]
