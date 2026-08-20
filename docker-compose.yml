@@ -35,7 +35,24 @@ services:
       postgres:
         condition: service_healthy
 
-  # worker: Phase 4에서 추가 (api와 동일 이미지, command: python -m app.worker)
+  worker:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-dev}:${POSTGRES_PASSWORD:-dev}@postgres:5432/${POSTGRES_DB:-settlement_hub}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-claude-opus-5}
+      NTS_API_KEY: ${NTS_API_KEY:-}
+      KASI_API_KEY: ${KASI_API_KEY:-}
+      UPLOAD_DIR: /app/uploads
+    command: python -m app.worker
+    volumes:
+      - uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      api:
+        condition: service_started  # api가 마이그레이션을 먼저 적용한다
+
   # frontend: Phase 5에서 추가
 
 volumes:

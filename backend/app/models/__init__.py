@@ -6,6 +6,7 @@ from app.models.audit import AuditLog
 from app.models.automation import AutomationRun
 from app.models.base import Base
 from app.models.expense import Evidence, Expense
+from app.models.holiday import Holiday
 from app.models.notification import Notification
 from app.models.project import Budget, Project
 from app.models.report import Report
@@ -21,6 +22,7 @@ __all__ = [
     "Budget",
     "Evidence",
     "Expense",
+    "Holiday",
     "Notification",
     "Project",
     "Report",
