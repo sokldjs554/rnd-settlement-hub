@@ -79,15 +79,22 @@ class AnthropicAIClient:
         data = base64.standard_b64encode(file_bytes).decode()
         file_block: DocumentBlockParam | ImageBlockParam
         if mime_type == "application/pdf":
-            file_block = {
-                "type": "document",
-                "source": {"type": "base64", "media_type": "application/pdf", "data": data},
-            }
+            file_block = DocumentBlockParam(
+                type="document",
+                source={"type": "base64", "media_type": "application/pdf", "data": data},
+            )
         else:
-            file_block = {
-                "type": "image",
-                "source": {"type": "base64", "media_type": mime_type, "data": data},
-            }
+            # 업로드 화이트리스트(storage.py)와 동일한 형식만 지원한다
+            image_media: Literal["image/jpeg", "image/png"] | None = {
+                "image/jpeg": "image/jpeg",
+                "image/png": "image/png",
+            }.get(mime_type)  # type: ignore[assignment]
+            if image_media is None:
+                raise ValueError(f"지원하지 않는 증빙 형식: {mime_type}")
+            file_block = ImageBlockParam(
+                type="image",
+                source={"type": "base64", "media_type": image_media, "data": data},
+            )
 
         response = self._client.messages.parse(
             model=self.model,
