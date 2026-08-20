@@ -22,8 +22,19 @@ Claude Code는 매 세션 이 파일을 먼저 읽는다.
 # 마이그레이션:  alembic upgrade head
 # 마이그레이션 생성: alembic revision --autogenerate -m "메시지"
 
+# 시드 데이터:   python -m app.seed --demo   # 계정 3종+과제+공휴일(+데모 집행 건)
+# 골든 테스트:   ANTHROPIC_API_KEY=... pytest -m golden   # 실 Claude API 프롬프트 회귀
+
+# ─ Frontend (frontend/ 디렉토리에서) ─
+# 개발 서버:     npm run dev
+# 테스트:        npm test
+# 린트/타입:     npm run lint && npm run typecheck
+
+# ─ E2E ─
+# bash e2e/run.sh   # 전용 DB 초기화→시드→api·worker·frontend 기동→Playwright
+
 # ─ 전체 스택 ─
-# Docker:        docker compose up --build   # postgres + api (worker/frontend는 Phase 4/5에서 추가)
+# Docker:        docker compose up --build   # postgres + api + worker + frontend
 ```
 
 ---

@@ -113,8 +113,9 @@ export default function ReportsPage() {
       <Dialog open={createOpen} title="월별 보고서 생성" onClose={() => setCreateOpen(false)}>
         <div className="space-y-3">
           <div>
-            <Label>과제</Label>
+            <Label htmlFor="report-project">과제</Label>
             <Select
+              id="report-project"
               value={form.project_id}
               onChange={(e) => setForm((f) => ({ ...f, project_id: e.target.value }))}
             >
@@ -130,16 +131,18 @@ export default function ReportsPage() {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label>연도</Label>
+              <Label htmlFor="report-year">연도</Label>
               <Input
+                id="report-year"
                 type="number"
                 value={form.year}
                 onChange={(e) => setForm((f) => ({ ...f, year: e.target.value }))}
               />
             </div>
             <div>
-              <Label>월</Label>
+              <Label htmlFor="report-month">월</Label>
               <Select
+                id="report-month"
                 value={form.month}
                 onChange={(e) => setForm((f) => ({ ...f, month: e.target.value }))}
               >

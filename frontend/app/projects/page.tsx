@@ -68,26 +68,26 @@ function CreateProjectDialog({ open, onClose }: { open: boolean; onClose: () => 
       <div className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label>과제번호</Label>
-            <Input value={form.code} onChange={setField("code")} placeholder="P-2026-001" />
+            <Label htmlFor="prj-code">과제번호</Label>
+            <Input id="prj-code" value={form.code} onChange={setField("code")} placeholder="P-2026-001" />
           </div>
           <div>
-            <Label>전문기관</Label>
-            <Input value={form.agency} onChange={setField("agency")} />
+            <Label htmlFor="prj-agency">전문기관</Label>
+            <Input id="prj-agency" value={form.agency} onChange={setField("agency")} />
           </div>
         </div>
         <div>
-          <Label>과제명</Label>
-          <Input value={form.name} onChange={setField("name")} />
+          <Label htmlFor="prj-name">과제명</Label>
+          <Input id="prj-name" value={form.name} onChange={setField("name")} />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label>연구 시작일</Label>
-            <Input type="date" value={form.start_date} onChange={setField("start_date")} />
+            <Label htmlFor="prj-start">연구 시작일</Label>
+            <Input id="prj-start" type="date" value={form.start_date} onChange={setField("start_date")} />
           </div>
           <div>
-            <Label>연구 종료일</Label>
-            <Input type="date" value={form.end_date} onChange={setField("end_date")} />
+            <Label htmlFor="prj-end">연구 종료일</Label>
+            <Input id="prj-end" type="date" value={form.end_date} onChange={setField("end_date")} />
           </div>
         </div>
         <div>
