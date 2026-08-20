@@ -12,6 +12,7 @@
 import sys
 from datetime import date
 from decimal import Decimal
+from typing import TypedDict
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -29,7 +30,16 @@ USERS = [
     ("researcher@demo.kr", "박연구", UserRole.RESEARCHER),
 ]
 
-PROJECTS = [
+class ProjectSpec(TypedDict):
+    code: str
+    name: str
+    agency: str
+    start_date: date
+    end_date: date
+    budgets: dict[BudgetCategory, int]
+
+
+PROJECTS: list[ProjectSpec] = [
     {
         "code": "P-2026-001",
         "name": "자율 지게차 인지 모듈 고도화",

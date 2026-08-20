@@ -50,6 +50,10 @@ select = ["E", "F", "I", "UP", "B"]
 # 로컬 alembic/ 디렉토리 때문에 alembic 패키지가 first-party로 오인되는 것을 방지
 known-third-party = ["alembic"]
 
+[tool.ruff.lint.per-file-ignores]
+# 시드 데이터는 표 형태 한 줄 유지가 더 읽기 좋다
+"app/seed.py" = ["E501"]
+
 [tool.mypy]
 python_version = "3.11"
 check_untyped_defs = true
