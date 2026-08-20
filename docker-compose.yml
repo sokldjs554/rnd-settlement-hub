@@ -53,7 +53,16 @@ services:
       api:
         condition: service_started  # api가 마이그레이션을 먼저 적용한다
 
-  # frontend: Phase 5에서 추가
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      api:
+        condition: service_started
 
 volumes:
   pgdata:

@@ -42,4 +42,23 @@ jobs:
         env:
           DATABASE_URL: postgresql+psycopg://dev:dev@localhost:5432/settlement_hub_test
 
-  # frontend 잡은 Phase 5에서 추가
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Lint (eslint)
+        run: npm run lint
+      - name: Type check (tsc)
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
