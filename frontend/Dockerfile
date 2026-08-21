@@ -3,9 +3,10 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY . .
-# NEXT_PUBLIC_* 값은 빌드 시점에 번들에 박힌다 — 배포 대상에 맞게 build arg로 주입
-ARG NEXT_PUBLIC_API_URL=http://localhost:8000
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+# Next.js rewrite 목적지는 빌드 시점에 고정되므로 build arg로 주입한다
+# (브라우저는 항상 같은 오리진의 /api/v1을 호출하고, 이 서버가 백엔드로 프록시한다)
+ARG API_ORIGIN=http://localhost:8000
+ENV API_ORIGIN=$API_ORIGIN
 RUN npm run build
 
 FROM node:22-alpine

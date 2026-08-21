@@ -31,9 +31,10 @@
 ## 3. Vercel (Frontend)
 
 1. https://vercel.com → Import → 이 저장소, **Root Directory를 `frontend`로 지정**
-2. 환경변수: `NEXT_PUBLIC_API_URL=https://<Render 서비스 URL>`
-3. 배포 후 백엔드 CORS에 Vercel 도메인 추가:
-   `backend/app/main.py`의 `allow_origins`에 `https://<프로젝트>.vercel.app` 추가 → 커밋·재배포
+2. 환경변수: `API_ORIGIN=https://<Render 서비스 URL>`
+   - 브라우저는 Vercel 도메인의 `/api/v1`을 호출하고, Next.js가 Render로 프록시한다
+   - 같은 오리진이므로 **백엔드 CORS 설정은 건드릴 필요가 없다**
+   - 이 값은 빌드 시점에 라우팅에 고정되므로, 변경 시 재배포가 필요하다
 
 ## 4. 배포 후 점검 체크리스트
 
@@ -46,6 +47,6 @@
 
 - Render free는 유휴 시 슬립 → 첫 요청이 느리다 (데모 전에 미리 깨워둘 것)
 - refresh 쿠키는 `secure=False`로 개발 기본값이다 — 운영 HTTPS에서는
-  `backend/app/api/routes/auth.py`의 `_set_refresh_cookie`에서 `secure=True`,
-  cross-site 배포(Vercel↔Render 도메인 상이)라면 `samesite="none"`으로 바꿔야 한다
+  `backend/app/api/routes/auth.py`의 `_set_refresh_cookie`에서 `secure=True`로 바꿔야 한다.
+  (same-origin 프록시 구조라 `samesite`는 기본값 `lax` 그대로 두면 된다)
 - 파일(증빙)은 Render disk 1GB에 저장된다 — 장기 운영 시 S3 교체 권장

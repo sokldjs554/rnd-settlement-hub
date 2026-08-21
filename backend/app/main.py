@@ -12,7 +12,9 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# 로컬 개발에서 Next.js(3000) → API(8000) 호출 허용. 운영 origin은 배포 문서에서 다룬다.
+# 평상시 브라우저는 프론트엔드와 같은 오리진의 /api/v1으로만 호출하고 Next.js가 여기로
+# 프록시하므로 CORS가 필요 없다. 아래 설정은 프록시를 우회해 API를 직접 호출하는
+# 개발 상황(로컬 3000 → 8000 직접 호출, Swagger 시험)을 위한 것이다.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],

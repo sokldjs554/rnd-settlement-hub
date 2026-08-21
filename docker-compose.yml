@@ -57,7 +57,10 @@ services:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+        # 컨테이너 네트워크 내부 주소 — 브라우저가 아니라 frontend 서버가 호출한다
+        API_ORIGIN: http://api:8000
+    environment:
+      API_ORIGIN: http://api:8000
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     depends_on:

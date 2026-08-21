@@ -315,7 +315,7 @@ FAIL은 승인 차단이 아니라 **차단 권고**(담당자가 사유 입력 
 - **Docker Compose**: `frontend` / `api` / `worker`(api와 동일 이미지) / `postgres` + 증빙 볼륨. `docker compose up`으로 전체 기동, 시드 스크립트 포함.
 - **CI (GitHub Actions)**: backend(ruff+mypy+pytest, PG service container) / frontend(eslint+tsc+vitest+build) / docker build. E2E는 별도 잡(수동/야간).
 - **클라우드**: Frontend Vercel, Backend+Worker Render(또는 Railway), DB Neon — 설정 파일과 배포 문서만 작성, 계정·콘솔 작업은 사용자 몫.
-- env 분리: `.env.example`에 `DATABASE_URL, SECRET_KEY, ANTHROPIC_API_KEY, AI_MODEL, NTS_API_KEY, KASI_API_KEY, NEXT_PUBLIC_API_URL, UPLOAD_DIR` 정의.
+- env 분리: `.env.example`에 `DATABASE_URL, SECRET_KEY, ANTHROPIC_API_KEY, AI_MODEL, NTS_API_KEY, KASI_API_KEY, API_ORIGIN, UPLOAD_DIR` 정의.
 
 ## 16. 개발 로드맵 (약 9주)
 

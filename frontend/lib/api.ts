@@ -8,7 +8,9 @@
 
 import type { ApiErrorBody } from "./types";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+// 같은 오리진의 /api/v1 로 호출한다 — Next.js 서버가 백엔드로 프록시한다(next.config.ts).
+// 프록시를 우회해 백엔드를 직접 호출해야 하는 경우에만 NEXT_PUBLIC_API_URL을 지정한다.
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 const TOKEN_KEY = "sh_access_token";
 
 export class ApiError extends Error {
