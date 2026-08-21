@@ -6,6 +6,8 @@ COPY pyproject.toml ./
 COPY app ./app
 COPY alembic.ini ./
 COPY alembic ./alembic
+# AI 추출 정확도 벤치마크 세트 (docker compose exec api python -m app.eval_extraction)
+COPY eval ./eval
 
 RUN pip install --no-cache-dir .
 
