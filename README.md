@@ -9,6 +9,10 @@ FastAPI + PostgreSQL + Next.js + Claude API로 만든 AI-Native 업무 자동화
 
 ![담당자 대시보드 — 검토 대기, 비목별 예산 소진, 룰 위반 Top 5, AI 지표, 자동화 Before/After](docs/images/dashboard.png)
 
+> 대시보드의 "AI 추출 성공률"은 **운영 호출이 실패 없이 완료된 비율**이다(호출 건수 병기).
+> 모델이 필드를 **정확히 읽는 비율(88%, 22/25)**은 별도 벤치마크로 잰다 → [docs/AI_EVAL.md](docs/AI_EVAL.md).
+> 운영 지표에 합성 평가 트래픽을 섞지 않기 위해 두 숫자를 분리했다.
+
 ## 채용공고 주요업무와의 대응
 
 리보틱스 [인턴] AI-Native 풀스택 엔지니어 공고의 업무 범위를 이 프로젝트가 어떻게 다루는지:
