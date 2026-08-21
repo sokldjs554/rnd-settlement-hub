@@ -105,7 +105,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-bold">대시보드</h1>
+        <h1 className="shrink-0 text-lg font-bold">대시보드</h1>
         <Select
           className="w-64"
           value={projectId}

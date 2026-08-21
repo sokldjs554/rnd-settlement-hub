@@ -5,9 +5,16 @@
 
 import { clsx } from "clsx";
 import { forwardRef } from "react";
+import { twMerge } from "tailwind-merge";
 
+/**
+ * 클래스 합성 헬퍼.
+ * twMerge를 거치는 이유: 컴포넌트 기본 클래스와 호출부 클래스가 충돌할 때
+ * (예: Select 기본 `w-full` vs 호출부 `w-64`) 단순 연결이면 둘 다 남아
+ * CSS 순서가 승자를 정해버린다. twMerge는 뒤에 온 것(호출부)이 이기도록 정리한다.
+ */
 export function cn(...args: Parameters<typeof clsx>) {
-  return clsx(...args);
+  return twMerge(clsx(...args));
 }
 
 /* ── Button ─────────────────────────────────── */
