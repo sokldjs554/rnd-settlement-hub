@@ -93,7 +93,7 @@ HOLIDAYS_2026 = [
 DEMO_EXPENSES = [
     ("시약 및 배양배지 구입", "바이오켐상사", "1234567891", 480_000, date(2026, 2, 10), BudgetCategory.MATERIAL, ExpenseStatus.APPROVED),
     ("LiDAR 센서 모듈 구입", "센서마트", "2208162517", 3_600_000, date(2026, 2, 20), BudgetCategory.MATERIAL, ExpenseStatus.APPROVED),
-    ("학회 출장 KTX 왕복", "한국철도공사", "1348172631", 96_000, date(2026, 3, 5), BudgetCategory.ACTIVITY, ExpenseStatus.APPROVED),
+    ("학회 출장 KTX 왕복", "한빛여행사", "1348172636", 96_000, date(2026, 3, 5), BudgetCategory.ACTIVITY, ExpenseStatus.APPROVED),
     ("3D 프린터 부품 제작", "메이커테크", "1068706394", 1_250_000, date(2026, 3, 12), BudgetCategory.MATERIAL, ExpenseStatus.NEEDS_REVIEW),
     ("전문가 자문 수당", "김전문", None, 500_000, date(2026, 3, 15), BudgetCategory.ACTIVITY, ExpenseStatus.NEEDS_REVIEW),
     ("실험용 지그 가공", "정밀가공", "1208147521", 800_000, date(2026, 3, 18), BudgetCategory.MATERIAL, ExpenseStatus.DRAFT),

@@ -174,6 +174,19 @@ class TestVendorRules:
         assert not _valid_biz_no_checksum("123")
         assert not _valid_biz_no_checksum("abcdefghij")
 
+    def test_seed_and_sample_biz_numbers_are_valid(self) -> None:
+        """시드·샘플 증빙에 쓰는 사업자번호는 실제로 체크섬을 통과해야 한다.
+
+        데모 중에 R-VND-001이 엉뚱하게 FAIL로 뜨면 시연이 망가지므로 여기서 고정한다.
+        """
+        from app.seed import DEMO_EXPENSES
+
+        for _title, vendor, biz_no, *_rest in DEMO_EXPENSES:
+            if biz_no is not None:
+                assert _valid_biz_no_checksum(biz_no), f"{vendor}: {biz_no}"
+        # docs/samples/card-receipt.png 의 가맹점 번호 (101-81-16293)
+        assert _valid_biz_no_checksum("1018116293")
+
     def test_invalid_format_fails(self) -> None:
         ctx = replace_expense(vendor_biz_no=INVALID_BIZ_NO)
         assert severity_of(ctx, "R-VND-001") == ValidationSeverity.FAIL

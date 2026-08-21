@@ -270,4 +270,5 @@ Vercel(FE) + Render(BE, `render.yaml` Blueprint) + Neon(DB). 절차: [docs/DEPLO
 | [docs/DESIGN.md](docs/DESIGN.md) | 설계안 전문 (문제 정의→아키텍처→DB→룰 카탈로그→로드맵) |
 | [docs/API.md](docs/API.md) | REST API 명세 |
 | [docs/DEPLOY.md](docs/DEPLOY.md) | 클라우드 배포 가이드 |
-| [docs/DEMO.md](docs/DEMO.md) | 5분 데모 시나리오 |
+| [docs/DEMO.md](docs/DEMO.md) | 5분 데모 시나리오 (입력값 표 + 룰별 재현 방법) |
+| [docs/samples/](docs/samples/) | 데모용 가상 증빙 이미지와 생성 스크립트 |
