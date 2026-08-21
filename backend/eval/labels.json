@@ -1,0 +1,227 @@
+[
+  {
+    "file": "r01_easy_simple.png",
+    "tier": "easy",
+    "doc_type": "simple",
+    "vendor_name": "(주)가온바이오",
+    "biz_no": "5064296095",
+    "total_amount": 4444000,
+    "issued_at": "2026-08-11"
+  },
+  {
+    "file": "r02_easy_invoice.png",
+    "tier": "easy",
+    "doc_type": "invoice",
+    "vendor_name": "(주)새빛전자부품",
+    "biz_no": "4054216110",
+    "total_amount": 5071000,
+    "issued_at": "2026-04-18"
+  },
+  {
+    "file": "r03_easy_invoice.png",
+    "tier": "easy",
+    "doc_type": "invoice",
+    "vendor_name": "빛가람기기",
+    "biz_no": "0348132106",
+    "total_amount": 4565000,
+    "issued_at": "2026-04-03"
+  },
+  {
+    "file": "r04_easy_simple.png",
+    "tier": "easy",
+    "doc_type": "simple",
+    "vendor_name": "(주)푸른融合소재",
+    "biz_no": "8631832801",
+    "total_amount": 1551000,
+    "issued_at": "2026-03-01"
+  },
+  {
+    "file": "r05_easy_simple.png",
+    "tier": "easy",
+    "doc_type": "simple",
+    "vendor_name": "(주)한결머티리얼",
+    "biz_no": "9577007304",
+    "total_amount": 2552000,
+    "issued_at": "2026-07-08"
+  },
+  {
+    "file": "r06_easy_simple.png",
+    "tier": "easy",
+    "doc_type": "simple",
+    "vendor_name": "정도화학",
+    "biz_no": "3675143530",
+    "total_amount": 5082000,
+    "issued_at": "2026-03-27"
+  },
+  {
+    "file": "r07_easy_simple.png",
+    "tier": "easy",
+    "doc_type": "simple",
+    "vendor_name": "(주)가온바이오",
+    "biz_no": "3152732148",
+    "total_amount": 4312000,
+    "issued_at": "2026-03-05"
+  },
+  {
+    "file": "r08_easy_simple.png",
+    "tier": "easy",
+    "doc_type": "simple",
+    "vendor_name": "(주)이룸테크",
+    "biz_no": "7970400252",
+    "total_amount": 2794000,
+    "issued_at": "2026-04-02"
+  },
+  {
+    "file": "r09_easy_card.png",
+    "tier": "easy",
+    "doc_type": "card",
+    "vendor_name": "누리소재상사",
+    "biz_no": "5506915228",
+    "total_amount": 5016000,
+    "issued_at": "2026-07-05"
+  },
+  {
+    "file": "r10_easy_simple.png",
+    "tier": "easy",
+    "doc_type": "simple",
+    "vendor_name": "정도화학",
+    "biz_no": "6074186476",
+    "total_amount": 2761000,
+    "issued_at": "2026-08-21"
+  },
+  {
+    "file": "r11_medium_invoice.jpg",
+    "tier": "medium",
+    "doc_type": "invoice",
+    "vendor_name": "(주)미르광학",
+    "biz_no": "8371266353",
+    "total_amount": 5027000,
+    "issued_at": "2026-04-12"
+  },
+  {
+    "file": "r12_medium_invoice.jpg",
+    "tier": "medium",
+    "doc_type": "invoice",
+    "vendor_name": "온새미로컴퍼니",
+    "biz_no": "9769429571",
+    "total_amount": 1738000,
+    "issued_at": "2026-05-16"
+  },
+  {
+    "file": "r13_medium_card.jpg",
+    "tier": "medium",
+    "doc_type": "card",
+    "vendor_name": "(주)해성정밀",
+    "biz_no": "3202435243",
+    "total_amount": 1243000,
+    "issued_at": "2026-07-27"
+  },
+  {
+    "file": "r14_medium_simple.jpg",
+    "tier": "medium",
+    "doc_type": "simple",
+    "vendor_name": "(주)해성정밀",
+    "biz_no": "8982155514",
+    "total_amount": 187000,
+    "issued_at": "2026-08-03"
+  },
+  {
+    "file": "r15_medium_invoice.jpg",
+    "tier": "medium",
+    "doc_type": "invoice",
+    "vendor_name": "온새미로컴퍼니",
+    "biz_no": "7322573317",
+    "total_amount": 2013000,
+    "issued_at": "2026-07-05"
+  },
+  {
+    "file": "r16_medium_invoice.jpg",
+    "tier": "medium",
+    "doc_type": "invoice",
+    "vendor_name": "세움과학",
+    "biz_no": "6758832809",
+    "total_amount": 3487000,
+    "issued_at": "2026-03-24"
+  },
+  {
+    "file": "r17_medium_simple.jpg",
+    "tier": "medium",
+    "doc_type": "simple",
+    "vendor_name": "한솔계측기기",
+    "biz_no": "3093916258",
+    "total_amount": 66000,
+    "issued_at": "2026-04-01"
+  },
+  {
+    "file": "r18_medium_simple.jpg",
+    "tier": "medium",
+    "doc_type": "simple",
+    "vendor_name": "(주)가온바이오",
+    "biz_no": "0736690087",
+    "total_amount": 1364000,
+    "issued_at": "2026-02-21"
+  },
+  {
+    "file": "r19_hard_card.jpg",
+    "tier": "hard",
+    "doc_type": "card",
+    "vendor_name": "(주)도담로보틱스",
+    "biz_no": "3689124319",
+    "total_amount": null,
+    "issued_at": "2026-08-04"
+  },
+  {
+    "file": "r20_hard_invoice.jpg",
+    "tier": "hard",
+    "doc_type": "invoice",
+    "vendor_name": "정도화학",
+    "biz_no": "4366878750",
+    "total_amount": 352000,
+    "issued_at": "2026-06-25"
+  },
+  {
+    "file": "r21_hard_simple.jpg",
+    "tier": "hard",
+    "doc_type": "simple",
+    "vendor_name": "빛가람기기",
+    "biz_no": null,
+    "total_amount": 880000,
+    "issued_at": "2026-07-12"
+  },
+  {
+    "file": "r22_hard_simple.jpg",
+    "tier": "hard",
+    "doc_type": "simple",
+    "vendor_name": "(주)가온바이오",
+    "biz_no": "5983604633",
+    "total_amount": 2563000,
+    "issued_at": "2026-07-09"
+  },
+  {
+    "file": "r23_hard_simple.jpg",
+    "tier": "hard",
+    "doc_type": "simple",
+    "vendor_name": "한솔계측기기",
+    "biz_no": null,
+    "total_amount": null,
+    "issued_at": "2026-07-23"
+  },
+  {
+    "file": "r24_hard_card.jpg",
+    "tier": "hard",
+    "doc_type": "card",
+    "vendor_name": "(주)이룸테크",
+    "biz_no": "7146220632",
+    "total_amount": null,
+    "issued_at": "2026-02-16"
+  },
+  {
+    "file": "r25_hard_simple.jpg",
+    "tier": "hard",
+    "doc_type": "simple",
+    "vendor_name": "(주)이룸테크",
+    "biz_no": "3997525573",
+    "total_amount": 484000,
+    "issued_at": "2026-06-02"
+  }
+]
