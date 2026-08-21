@@ -1,0 +1,43 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>샘플 증빙 — 신용카드 매출전표</title>
+<style>
+  /* 데모용 증빙 이미지의 원본. render.mjs로 PNG를 다시 뽑을 수 있다. */
+  body { margin: 0; background: #e5e5e5; font-family: "WenQuanYi Zen Hei", "Noto Sans KR", sans-serif; }
+  .slip {
+    width: 380px; margin: 24px auto; padding: 22px 24px 28px;
+    background: #fff; color: #111; font-size: 13px; line-height: 1.75;
+    box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  }
+  h1 { font-size: 16px; text-align: center; letter-spacing: 4px; margin: 0 0 4px; }
+  .sub { text-align: center; font-size: 11px; color: #666; margin-bottom: 14px; }
+  hr { border: 0; border-top: 1px dashed #999; margin: 10px 0; }
+  .row { display: flex; justify-content: space-between; }
+  .row span:first-child { color: #444; }
+  .total { font-size: 17px; font-weight: bold; padding-top: 4px; }
+  .foot { margin-top: 14px; font-size: 11px; color: #666; text-align: center; }
+</style>
+<div class="slip">
+  <h1>신용카드 매출전표</h1>
+  <div class="sub">고객용 (부가세 포함)</div>
+  <hr>
+  <div class="row"><span>가맹점명</span><span>(주)한빛사이언스</span></div>
+  <div class="row"><span>사업자등록번호</span><span>101-81-16293</span></div>
+  <div class="row"><span>대표자</span><span>정한빛</span></div>
+  <div class="row"><span>주소</span><span>대전 유성구 대학로 291</span></div>
+  <div class="row"><span>전화</span><span>042-350-1234</span></div>
+  <hr>
+  <div class="row"><span>거래일시</span><span>2026-08-20 14:32</span></div>
+  <div class="row"><span>거래구분</span><span>신용승인 / 일시불</span></div>
+  <div class="row"><span>카드번호</span><span>5310-****-****-1234</span></div>
+  <div class="row"><span>승인번호</span><span>30215487</span></div>
+  <hr>
+  <div class="row"><span>품명</span><span>실험용 시약 및 소모품</span></div>
+  <div class="row"><span>수량</span><span>1식</span></div>
+  <hr>
+  <div class="row"><span>공급가액</span><span>1,200,000원</span></div>
+  <div class="row"><span>부가세</span><span>120,000원</span></div>
+  <div class="row total"><span>합계금액</span><span>1,320,000원</span></div>
+  <hr>
+  <div class="foot">본 전표는 포트폴리오 데모용으로 만든 가상의 증빙입니다.<br>실재하는 사업자·거래와 무관합니다.</div>
+</div>

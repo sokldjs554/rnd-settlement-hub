@@ -1,0 +1,70 @@
+[project]
+name = "settlement-hub-backend"
+version = "0.1.0"
+description = "RnD Settlement Hub - R&D 정산 관제 시스템 백엔드"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sqlalchemy>=2.0.30",
+    "alembic>=1.13",
+    "psycopg[binary]>=3.1",
+    "pydantic[email]>=2.7",
+    "pydantic-settings>=2.2",
+    # 파일 업로드(multipart form) 파싱 — 증빙 업로드에서 사용
+    "python-multipart>=0.0.9",
+    # 인증: JWT 발급/검증, 비밀번호 해시
+    "pyjwt>=2.8",
+    "bcrypt>=4.1",
+    # 외부 공공 API 호출 (국세청 사업자 상태조회 등)
+    "httpx>=0.27",
+    # Claude API — 증빙 구조화·비목 제안·보고서 서술 초안
+    "anthropic>=0.125",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+    "ruff>=0.5",
+    "mypy>=1.10",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# autogenerate 산출물은 스타일 검사에서 제외 (내용 리뷰는 코드리뷰로)
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+# 로컬 alembic/ 디렉토리 때문에 alembic 패키지가 first-party로 오인되는 것을 방지
+known-third-party = ["alembic"]
+
+[tool.ruff.lint.per-file-ignores]
+# 시드 데이터는 표 형태 한 줄 유지가 더 읽기 좋다
+"app/seed.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+no_implicit_optional = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# golden 마커(실제 Claude API 호출)는 기본 실행에서 제외 — pytest -m golden 으로 opt-in
+addopts = "-m 'not golden'"
+markers = [
+    "golden: 실제 Claude API를 호출하는 프롬프트 회귀 테스트 (ANTHROPIC_API_KEY 필요)",
+]
