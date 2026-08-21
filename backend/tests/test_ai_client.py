@@ -93,12 +93,18 @@ def test_suggest_category_maps_to_enum(client_with_stub) -> None:
     )
 
     suggestion = ai.suggest_category(
-        extraction=None, title="시약 구입", vendor_name="테스트상사", amount=500_000
+        extraction=None,
+        title="시약 구입",
+        vendor_name="테스트상사",
+        amount=500_000,
+        purpose="인지 모듈 성능시험용",
     )
 
     assert suggestion.category is BudgetCategory.MATERIAL
     assert suggestion.confidence == Decimal("0.88")
     assert "시약 구입" in calls["parse"]["messages"][0]["content"]
+    # 사용 용도가 프롬프트에 실제로 들어가는지 — 비목은 용도로 갈린다
+    assert "인지 모듈 성능시험용" in calls["parse"]["messages"][0]["content"]
 
 
 def test_narrative_joins_text_blocks_only(client_with_stub) -> None:

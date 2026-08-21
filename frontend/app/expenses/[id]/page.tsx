@@ -271,6 +271,8 @@ export default function ExpenseDetailPage() {
           <dl className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3 text-sm">
             <dt className="text-slate-500">과제</dt>
             <dd className="font-mono text-xs">{expense.project_code}</dd>
+            <dt className="text-slate-500">사용 용도</dt>
+            <dd>{expense.purpose ?? <span className="text-slate-400">미입력</span>}</dd>
             <dt className="text-slate-500">작성자</dt>
             <dd>{expense.created_by_name}</dd>
             <dt className="text-slate-500">등록일</dt>

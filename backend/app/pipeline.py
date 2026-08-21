@@ -180,6 +180,7 @@ def _suggest_category(
             title=expense.title,
             vendor_name=expense.vendor_name,
             amount=int(expense.amount),
+            purpose=expense.purpose,
         )
     except AIUnavailableError:
         return None

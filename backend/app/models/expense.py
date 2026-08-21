@@ -46,6 +46,9 @@ class Expense(TimestampMixin, Base):
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     vendor_name: Mapped[str] = mapped_column(String(255), nullable=False)
     vendor_biz_no: Mapped[str | None] = mapped_column(String(10))  # 사업자등록번호(숫자 10자리)
+    # 사용 용도 — 규정(혁신법 시행령 별표 2)이 비목을 "품목"이 아니라 "용도"로 가르므로,
+    # 같은 물품이라도 용도에 따라 비목이 달라진다. AI 비목 제안의 핵심 입력.
+    purpose: Mapped[str | None] = mapped_column(String(500))
     amount: Mapped[Decimal] = mapped_column(Numeric(15, 0), nullable=False)  # 원화 정수
     spent_at: Mapped[date] = mapped_column(Date, nullable=False)  # 집행일
     status: Mapped[ExpenseStatus] = mapped_column(

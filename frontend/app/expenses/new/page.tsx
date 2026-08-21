@@ -25,7 +25,11 @@ export default function NewExpensePage() {
       setProgress("집행 건 등록 중…");
       const expense = await api<Expense>("/expenses", {
         method: "POST",
-        body: JSON.stringify({ ...values, vendor_biz_no: values.vendor_biz_no || null }),
+        body: JSON.stringify({
+          ...values,
+          vendor_biz_no: values.vendor_biz_no || null,
+          purpose: values.purpose || null,
+        }),
       });
       for (const [index, file] of files.entries()) {
         setProgress(`증빙 업로드 중… (${index + 1}/${files.length})`);
