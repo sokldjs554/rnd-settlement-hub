@@ -208,6 +208,8 @@ cd frontend && npm install && npm run dev    # 터미널 3 → http://localhost:
 | `KASI_API_KEY` | 공휴일 동기화 ([특일 정보](https://www.data.go.kr/data/15012690/openapi.do)) | 내장 2026 공휴일 시드 사용 |
 | `SECRET_KEY` | JWT 서명 | 개발 기본값 (운영에서 필수 교체) |
 
+키가 실제로 적용됐는지는 `GET /health`의 `integrations` 필드로 확인합니다(키 값은 노출되지 않고 설정 여부만 반환).
+
 ## 10. 테스트
 
 ```bash

@@ -67,3 +67,14 @@ def test_rbac_researcher_cannot_create_project(client: TestClient, db: Session) 
     )
     assert res.status_code == 403
     assert res.json()["error"]["code"] == "FORBIDDEN"
+
+
+def test_health_reports_integration_flags(client: TestClient) -> None:
+    """헬스체크는 외부 연동 설정 여부만 알려주고 키 값은 노출하지 않는다."""
+    res = client.get("/health")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["status"] == "ok"
+    # 테스트 환경엔 키가 없으므로 전부 False
+    assert body["integrations"] == {"ai": False, "nts": False, "kasi": False}
+    assert "key" not in res.text.lower()

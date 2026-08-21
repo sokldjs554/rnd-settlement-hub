@@ -4,6 +4,7 @@ from sqlalchemy import text
 
 from app.api.errors import register_error_handlers
 from app.api.router import api_router
+from app.config import get_settings
 from app.db import engine
 
 app = FastAPI(
@@ -29,7 +30,20 @@ app.include_router(api_router)
 
 @app.get("/health")
 def health() -> dict:
-    """헬스체크. DB 연결까지 확인한다(배포 환경 readiness probe용)."""
+    """헬스체크 (배포 환경 readiness probe용).
+
+    DB 연결과 함께 선택적 외부 연동의 '설정 여부'를 함께 보고한다.
+    키 값 자체는 절대 노출하지 않고 불리언만 반환한다 — 배포 후
+    "왜 AI 추출이 안 뜨지?"를 집행 건을 제출해 보지 않고 바로 확인하기 위한 것이다.
+    """
     with engine.connect() as conn:
         conn.execute(text("SELECT 1"))
-    return {"status": "ok"}
+    settings = get_settings()
+    return {
+        "status": "ok",
+        "integrations": {
+            "ai": bool(settings.anthropic_api_key),  # False면 룰 검증만 수행(성능 저하 모드)
+            "nts": bool(settings.nts_api_key),  # False면 사업자 상태 미확인(R-VND-003)
+            "kasi": bool(settings.kasi_api_key),  # False면 내장 공휴일 시드 사용
+        },
+    }
