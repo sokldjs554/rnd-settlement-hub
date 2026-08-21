@@ -165,6 +165,13 @@ hallucination 통제 장치:
 
 ## 9. 실행 방법
 
+### GitHub Codespaces (설치 없이 브라우저에서)
+
+로컬에 Docker를 설치할 수 없는 환경(예: macOS 12 미만 — Docker Desktop·Colima 모두 미지원)에서는
+이 방법이 가장 확실합니다. 저장소 상단 **Code → Codespaces → Create codespace** 클릭 후,
+열린 터미널에서 아래 Docker 명령을 그대로 실행하면 됩니다.
+포트 3000이 자동 포워딩되어 브라우저에서 바로 열립니다.
+
 ### Docker (전체 스택 한 번에)
 
 ```bash
