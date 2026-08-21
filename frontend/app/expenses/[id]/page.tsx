@@ -140,6 +140,18 @@ export default function ExpenseDetailPage() {
       setActionError(e instanceof ApiError ? e.message : "처리에 실패했습니다."),
   });
 
+  // 작성 중(DRAFT) 건을 제출해 검증 파이프라인을 태운다 (반려 후 수정한 건의 재제출 포함)
+  const submit = useMutation({
+    mutationFn: () => api(`/expenses/${id}/submit`, { method: "POST" }),
+    onSuccess: () => {
+      setActionError(null);
+      queryClient.invalidateQueries({ queryKey: ["expense", id] });
+      queryClient.invalidateQueries({ queryKey: ["expense-history", id] });
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+    },
+    onError: (e) => setActionError(e instanceof ApiError ? e.message : "제출에 실패했습니다."),
+  });
+
   if (isLoading) return <Spinner />;
   if (isError || !expense) return <ErrorState message="집행 건을 불러오지 못했습니다." />;
 
@@ -158,9 +170,16 @@ export default function ExpenseDetailPage() {
         {expense.report_id && <span className="text-xs text-slate-500">보고서에 확정 포함(잠김)</span>}
         <div className="ml-auto flex gap-2">
           {isOwnerEditable && (
-            <Button variant="secondary" onClick={() => router.push(`/expenses`)}>
-              목록
-            </Button>
+            <>
+              <Button variant="secondary" onClick={() => router.push(`/expenses/${id}/edit`)}>
+                수정
+              </Button>
+              {expense.status === "DRAFT" && (
+                <Button disabled={submit.isPending} onClick={() => submit.mutate()}>
+                  {submit.isPending ? "제출 중…" : "제출"}
+                </Button>
+              )}
+            </>
           )}
           {canReview && (
             <>
@@ -175,6 +194,7 @@ export default function ExpenseDetailPage() {
         </div>
       </div>
 
+      {actionError && dialog === null && <ErrorState message={actionError} />}
       {expense.status === "REJECTED" && expense.reject_reason && (
         <ErrorState message={`반려 사유: ${expense.reject_reason}`} />
       )}

@@ -82,3 +82,50 @@ test("집행 등록부터 보고서·대시보드까지 전 과정이 동작한�
   await expect(page.getByText("비목별 예산 소진")).toBeVisible();
   await expect(page.getByText("AI 비목 제안 채택률")).toBeVisible();
 });
+
+test("반려된 건을 수정하면 다시 제출할 수 있다", async ({ page }) => {
+  // ── 연구원: 예산이 없는 비목(학생인건비)으로 등록 → 예산 미등록 FAIL을 유도 ──
+  await login(page, "researcher@demo.kr");
+  await page.goto("/expenses/new");
+  await page.getByLabel("과제").selectOption({ index: 1 });
+  await page.getByLabel(/^비목/).selectOption("STUDENT_PERSONNEL");
+  await page.getByLabel("제목").fill("E2E 비목 오선택 건");
+  await page.getByLabel("거래처명").fill("이투이상사");
+  await page.getByLabel("사업자등록번호").fill("123-45-67891");
+  await page.getByLabel("금액(원)").fill("300000");
+  await page.getByLabel("집행일").fill("2026-04-08");
+  await page
+    .getByLabel(/증빙 파일/)
+    .setInputFiles(path.join(__dirname, "..", "fixtures", "tax_invoice.pdf"));
+  await page.getByRole("button", { name: "등록하고 제출" }).click();
+
+  await expect(page.getByRole("heading", { name: "E2E 비목 오선택 건" })).toBeVisible({
+    timeout: 20_000,
+  });
+  await expect(page.getByText("검토 대기").first()).toBeVisible({ timeout: 60_000 });
+  await expect(page.getByText("R-BGT-001")).toBeVisible(); // 예산 미등록 위반
+  const detailUrl = page.url();
+  await logout(page);
+
+  // ── 담당자: 반려 ──
+  await login(page, "manager@demo.kr");
+  await page.goto(detailUrl);
+  await page.getByRole("button", { name: "반려" }).click();
+  await page.getByLabel(/반려 사유/).fill("비목이 잘못 선택되었습니다. 연구재료비로 재제출해 주세요.");
+  await page.getByRole("button", { name: "확인" }).click();
+  await expect(page.getByText(/반려 사유:/)).toBeVisible();
+  await logout(page);
+
+  // ── 연구원: 수정 → 작성 중으로 복귀 → 재제출 → 이번엔 예산 룰 통과 ──
+  await login(page, "researcher@demo.kr");
+  await page.goto(detailUrl);
+  await page.getByRole("button", { name: "수정" }).click();
+  await expect(page.getByRole("heading", { name: "집행 건 수정" })).toBeVisible();
+  await page.getByLabel(/^비목/).selectOption("MATERIAL");
+  await page.getByRole("button", { name: "저장" }).click();
+
+  await expect(page.getByText("작성 중").first()).toBeVisible({ timeout: 20_000 });
+  await page.getByRole("button", { name: "제출", exact: true }).click();
+  await expect(page.getByText("검토 대기").first()).toBeVisible({ timeout: 60_000 });
+  await expect(page.getByText("비목 예산 잔액이 충분합니다.")).toBeVisible();
+});
