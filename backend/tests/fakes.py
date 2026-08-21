@@ -44,7 +44,13 @@ class FakeAIClient:
         return self.extraction
 
     def suggest_category(
-        self, *, extraction: ExtractedDoc | None, title: str, vendor_name: str, amount: int
+        self,
+        *,
+        extraction: ExtractedDoc | None,
+        title: str,
+        vendor_name: str,
+        amount: int,
+        purpose: str | None = None,
     ) -> CategorySuggestion:
         self.suggest_calls += 1
         return self.suggestion

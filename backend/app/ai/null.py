@@ -15,7 +15,13 @@ class NullAIClient:
         raise AIUnavailableError("ANTHROPIC_API_KEY가 설정되지 않았습니다.")
 
     def suggest_category(
-        self, *, extraction: ExtractedDoc | None, title: str, vendor_name: str, amount: int
+        self,
+        *,
+        extraction: ExtractedDoc | None,
+        title: str,
+        vendor_name: str,
+        amount: int,
+        purpose: str | None,
     ) -> CategorySuggestion:
         raise AIUnavailableError("ANTHROPIC_API_KEY가 설정되지 않았습니다.")
 

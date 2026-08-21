@@ -29,7 +29,9 @@ FastAPI + PostgreSQL + Next.js + Claude API로 만든 AI-Native 업무 자동화
 
 판정은 AI가 아니라 이 결정론적 룰들이 한다. FAIL은 "차단 권고"이며, 담당자가 사유를
 남기면 override 승인이 가능하다(사유는 감사 로그에 기록). 전체 구현은
-[`backend/app/rules/catalog.py`](backend/app/rules/catalog.py) 한 파일이다.
+[`backend/app/rules/catalog.py`](backend/app/rules/catalog.py) 한 파일이고,
+**룰별 규정 조항 근거**(혁신법·시행령 별표 2·사용기준 고시·세법)와 "규정 근거 룰 vs
+내부 운영 룰"의 구분은 [docs/domain-rules.md](docs/domain-rules.md)에 정리했다.
 
 | 코드 | 심각도 | 검사 내용 |
 |---|---|---|
@@ -328,3 +330,4 @@ Vercel(FE) + Render(BE, `render.yaml` Blueprint) + Neon(DB). 절차: [docs/DEPLO
 | [docs/DEMO.md](docs/DEMO.md) | 5분 데모 시나리오 (입력값 표 + 룰별 재현 방법) |
 | [docs/samples/](docs/samples/) | 데모용 가상 증빙 이미지와 생성 스크립트 |
 | [docs/AI_EVAL.md](docs/AI_EVAL.md) | AI 추출 정확도 벤치마크 결과 (합성 영수증 25장) |
+| [docs/domain-rules.md](docs/domain-rules.md) | 검증 룰 15종의 규정 조항 근거 (혁신법·고시·세법) |

@@ -46,7 +46,13 @@ class AIClient(Protocol):
     def extract_document(self, *, file_bytes: bytes, mime_type: str) -> ExtractedDoc: ...
 
     def suggest_category(
-        self, *, extraction: ExtractedDoc | None, title: str, vendor_name: str, amount: int
+        self,
+        *,
+        extraction: ExtractedDoc | None,
+        title: str,
+        vendor_name: str,
+        amount: int,
+        purpose: str | None,
     ) -> CategorySuggestion: ...
 
     def draft_report_narrative(self, *, summary: dict) -> str: ...

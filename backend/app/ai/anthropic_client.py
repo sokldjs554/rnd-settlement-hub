@@ -120,7 +120,13 @@ class AnthropicAIClient:
         )
 
     def suggest_category(
-        self, *, extraction: ExtractedDoc | None, title: str, vendor_name: str, amount: int
+        self,
+        *,
+        extraction: ExtractedDoc | None,
+        title: str,
+        vendor_name: str,
+        amount: int,
+        purpose: str | None,
     ) -> CategorySuggestion:
         extraction_summary = None
         if extraction is not None:
@@ -139,6 +145,7 @@ class AnthropicAIClient:
                         title=title,
                         vendor_name=vendor_name,
                         amount=amount,
+                        purpose=purpose,
                         extraction_summary=extraction_summary,
                     ),
                 }

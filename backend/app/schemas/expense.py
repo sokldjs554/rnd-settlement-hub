@@ -18,6 +18,7 @@ class ExpenseCreate(BaseModel):
     title: str = Field(min_length=1, max_length=255)
     vendor_name: str = Field(min_length=1, max_length=255)
     vendor_biz_no: str | None = Field(default=None)
+    purpose: str | None = Field(default=None, max_length=500)  # 사용 용도 (비목 판단 근거)
     amount: Decimal = Field(gt=0, decimal_places=0)
     spent_at: date
 
@@ -35,6 +36,7 @@ class ExpenseUpdate(BaseModel):
     title: str | None = Field(default=None, min_length=1, max_length=255)
     vendor_name: str | None = Field(default=None, min_length=1, max_length=255)
     vendor_biz_no: str | None = None
+    purpose: str | None = Field(default=None, max_length=500)
     amount: Decimal | None = Field(default=None, gt=0, decimal_places=0)
     spent_at: date | None = None
 
@@ -55,6 +57,7 @@ class ExpenseOut(BaseModel):
     title: str
     vendor_name: str
     vendor_biz_no: str | None
+    purpose: str | None
     amount: Decimal
     spent_at: date
     status: ExpenseStatus

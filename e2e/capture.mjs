@@ -47,6 +47,7 @@ async function registerExpense({ title, amount }) {
   await page.getByLabel("과제").selectOption({ index: 1 });
   await page.getByLabel(/^비목/).selectOption("MATERIAL");
   await page.getByLabel("제목").fill(title);
+  await page.getByLabel("사용 용도").fill("인지 모듈 성능시험용 시약 — 연구 수행에 직접 사용");
   await page.getByLabel("거래처명").fill("(주)한빛사이언스");
   await page.getByLabel("사업자등록번호").fill("101-81-16293");
   await page.getByLabel("금액(원)").fill(String(amount));

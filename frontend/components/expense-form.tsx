@@ -27,6 +27,7 @@ export const expenseSchema = z.object({
     .regex(/^[\d-]*$/, "숫자와 하이픈만 입력하세요")
     .optional()
     .or(z.literal("")),
+  purpose: z.string().max(500, "500자 이내로 입력하세요").optional().or(z.literal("")),
   amount: z.coerce
     .number({ message: "금액을 입력하세요" })
     .int("원 단위 정수")
@@ -113,6 +114,20 @@ export function ExpenseForm({
           <Label htmlFor="title">제목</Label>
           <Input id="title" placeholder="예: 시약 및 배양배지 구입" {...register("title")} />
           <FieldError message={errors.title?.message} />
+        </div>
+
+        <div>
+          <Label htmlFor="purpose">사용 용도</Label>
+          <Input
+            id="purpose"
+            placeholder="예: 인지 모듈 성능시험용 시약 (연구 수행에 직접 사용)"
+            {...register("purpose")}
+          />
+          {/* 비목은 품목이 아니라 용도로 갈린다 — AI 비목 제안(R-CAT-001)의 판단 근거가 된다 */}
+          <p className="mt-1 text-xs text-slate-500">
+            무엇을 위해 쓰는 비용인지 적으면 비목 자동 검증이 정확해집니다.
+          </p>
+          <FieldError message={errors.purpose?.message} />
         </div>
 
         <div className="grid grid-cols-2 gap-3">

@@ -38,6 +38,7 @@ export default function EditExpensePage() {
           title: form.title,
           vendor_name: form.vendor_name,
           vendor_biz_no: form.vendor_biz_no || null,
+          purpose: form.purpose || null,
           amount: form.amount,
           spent_at: form.spent_at,
         }),
@@ -74,6 +75,7 @@ export default function EditExpensePage() {
           title: expense.title,
           vendor_name: expense.vendor_name,
           vendor_biz_no: expense.vendor_biz_no ?? "",
+          purpose: expense.purpose ?? "",
           amount: Number(expense.amount),
           spent_at: expense.spent_at,
         }}

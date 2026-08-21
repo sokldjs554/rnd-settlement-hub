@@ -7,7 +7,7 @@
 
 from app.models.enums import BUDGET_CATEGORY_LABELS
 
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"  # v2: 비목 제안에 사용 용도 입력 추가
 
 # ── 1. 증빙 구조화 ──────────────────────────────────────────────
 # 원칙: 보이는 것만 추출하고, 불확실하면 null. 판정(대사)은 룰 엔진의 몫이다.
@@ -46,18 +46,28 @@ SUGGESTION_SYSTEM = f"""\
 - 인건비 계열(PERSONNEL, STUDENT_PERSONNEL, ALLOWANCE)은 급여·수당 지급일 때만 제안한다.
 
 규칙:
+- 비목은 품목이 아니라 **용도**로 갈린다(연구개발비 사용 용도 기준). "사용 용도"가 주어지면
+  품목명보다 용도를 우선해 판단하라. (예: 같은 노트북도 연구 데이터 수집 장비면 EQUIPMENT,
+  행정용이면 직접비 불인정 소지 — 용도가 없으면 품목만으로 추정하되 confidence를 낮춰라.)
 - rationale은 한국어 한두 문장으로, 담당자가 판단 근거를 확인할 수 있게 쓴다.
 - confidence는 제안 확신도(0~1). 경계가 애매한 건(예: 장비 부품 구입)은 낮게 매겨라."""
 
 
 def suggestion_user(
-    *, title: str, vendor_name: str, amount: int, extraction_summary: str | None
+    *,
+    title: str,
+    vendor_name: str,
+    amount: int,
+    purpose: str | None,
+    extraction_summary: str | None,
 ) -> str:
     lines = [
         f"집행 제목: {title}",
         f"거래처: {vendor_name}",
         f"금액: {amount:,}원",
     ]
+    if purpose:
+        lines.append(f"사용 용도: {purpose}")
     if extraction_summary:
         lines.append(f"증빙에서 추출된 정보: {extraction_summary}")
     return "\n".join(lines)

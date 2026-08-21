@@ -78,7 +78,7 @@ GET /expenses?page=1&size=20&sort=-created_at&status=NEEDS_REVIEW&project_id=1&c
 
 | Method | Path | 권한 | 설명 |
 |---|---|---|---|
-| POST | `/expenses` | RESEARCHER | 등록(DRAFT). `{project_id, category, title, vendor_name, vendor_biz_no?, amount, spent_at}` |
+| POST | `/expenses` | RESEARCHER | 등록(DRAFT). `{project_id, category, title, vendor_name, vendor_biz_no?, purpose?, amount, spent_at}` |
 | GET | `/expenses` | 로그인* | 목록. *RESEARCHER는 본인 건만 |
 | GET | `/expenses/{id}` | 소유자/MANAGER | 상세: evidences, ai_runs(추출·제안), validation_results, approvals 타임라인 포함 |
 | PATCH | `/expenses/{id}` | 소유자 | DRAFT·REJECTED 상태만 수정 가능. REJECTED 수정 시 DRAFT로 복귀 |
@@ -102,6 +102,7 @@ DRAFT ──submit──▶ SUBMITTED ──워커──▶ VALIDATING ──완
 {
   "id": 42, "project_id": 1, "category": "MATERIAL", "status": "NEEDS_REVIEW",
   "title": "시약 구입", "vendor_name": "테스트상사", "vendor_biz_no": "1234567890",
+  "purpose": "인지 모듈 성능시험용 시약",
   "amount": 500000, "spent_at": "2026-03-10",
   "evidences": [{"id": 7, "file_name": "tax_invoice.pdf", "mime_type": "application/pdf"}],
   "ai": {

@@ -67,6 +67,7 @@ export interface Expense {
   title: string;
   vendor_name: string;
   vendor_biz_no: string | null;
+  purpose: string | null; // 사용 용도 — 비목 판단 근거
   amount: string;
   spent_at: string;
   status: ExpenseStatus;
