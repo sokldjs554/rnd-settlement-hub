@@ -23,3 +23,6 @@ node_modules/
 
 # build artifacts
 *.tsbuildinfo
+
+# 캡처 스크립트 출력 (README는 손으로 고른 docs/images/*.png를 쓴다)
+docs/images/auto/

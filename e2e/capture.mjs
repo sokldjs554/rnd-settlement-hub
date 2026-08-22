@@ -7,7 +7,11 @@
  * 데모 증빙(docs/samples/card-receipt.png)으로 집행 건 2개를 실제로 등록한다:
  *   ① 증빙과 값이 전부 일치하는 기준선 → 승인까지
  *   ② 금액만 다르게 입력해 R-EVD-002 위반을 유도
- * 그 후 상세·보고서·대시보드를 docs/images/*.png 로 저장한다.
+ * 그 후 상세·보고서·대시보드를 docs/images/auto/*.png 로 저장한다.
+ *
+ * README의 '화면' 섹션이 쓰는 docs/images/*.png는 배포 환경에서 손으로 고른 캡처다.
+ * 그래서 이 스크립트는 auto/ 하위에만 쓴다 — 로컬 데이터(집행 몇 건)로 찍은 얕은 화면이
+ * 실서비스 캡처를 덮어쓰지 않게 하기 위해서다. 교체할 컷만 골라서 위로 복사할 것.
  *
  * 주의: 실행할 때마다 집행 건이 새로 생기므로, 깨끗한 스크린샷을 원하면
  * `docker compose down -v && docker compose up -d --build && ... seed --demo` 후 1회만 실행.
@@ -15,18 +19,20 @@
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import fs from "node:fs";
 
 const require = createRequire(path.join(process.cwd(), "package.json"));
 const { chromium } = require("@playwright/test");
 
 const BASE = process.env.BASE_URL || "http://localhost:3000";
 const here = path.dirname(fileURLToPath(import.meta.url));
-const outDir = path.join(here, "..", "docs", "images");
+const outDir = path.join(here, "..", "docs", "images", "auto");
 const receipt = path.join(here, "..", "docs", "samples", "card-receipt.png");
 const PASSWORD = "demo1234!";
 
 const browser = await chromium.launch({ executablePath: process.env.PW_EXECUTABLE_PATH || undefined });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
+fs.mkdirSync(outDir, { recursive: true });
 const shot = (name, opts = {}) => page.screenshot({ path: path.join(outDir, name), ...opts });
 
 async function login(email) {
@@ -99,4 +105,4 @@ await shot("dashboard.png");
 console.log("   dashboard.png 저장");
 
 await browser.close();
-console.log(`완료 — ${outDir} 에 4장 저장. git add docs/images && commit && push 하세요.`);
+console.log(`완료 — ${outDir} 에 4장 저장. 쓸 컷만 docs/images/ 로 복사한 뒤 커밋하세요.`);
