@@ -203,12 +203,14 @@ export default function DashboardPage() {
               <LineChart data={data.lead_time} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eef2f7" vertical={false} />
                 <XAxis dataKey="month" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
+                {/* width 40으로는 "0.0075일" 같은 소수 라벨이 왼쪽부터 잘려
+                    앞자리 0이 사라진다(.0075일) — 넓히고 포맷터로 명시 */}
                 <YAxis
                   tick={{ fontSize: 11 }}
                   tickLine={false}
                   axisLine={false}
-                  unit="일"
-                  width={40}
+                  width={56}
+                  tickFormatter={(v: number) => `${v}일`}
                 />
                 <Tooltip formatter={(v) => `${v}일`} />
                 <Line
