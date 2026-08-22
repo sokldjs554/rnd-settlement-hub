@@ -20,6 +20,9 @@ services:
     dockerfilePath: backend/Dockerfile
     dockerContext: backend
     plan: free
+    # DB(Neon)와 같은 리전에 둔다 — 요청마다 왕복하는 구간이라 지연이 그대로 체감된다.
+    # Neon 프로젝트를 다른 리전에 만들었다면 여기도 같이 바꿔야 한다.
+    region: singapore
     healthCheckPath: /health
     dockerCommand: sh -c "alembic upgrade head && (python -m app.worker &) && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
