@@ -55,9 +55,11 @@ test("집행 등록부터 보고서·대시보드까지 전 과정이 동작한�
   const detailUrl = page.url();
   await logout(page);
 
-  // ── 3) 담당자: 검토·승인 ──
+  // ── 3) 담당자: 알림 벨 → 알림 클릭으로 해당 건에 도착 → 검토·승인 ──
   await login(page, "manager@demo.kr");
-  await page.goto(detailUrl);
+  await page.getByRole("button", { name: "알림" }).click();
+  await page.getByText("새 검토 대기 건이 있습니다").first().click();
+  await expect(page).toHaveURL(detailUrl);
   await expect(page.getByText("입력값 ↔ AI 추출값 대조")).toBeVisible();
   await page.getByRole("button", { name: "승인", exact: true }).click();
   await page.getByRole("button", { name: "확인" }).click();

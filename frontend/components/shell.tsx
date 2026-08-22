@@ -24,6 +24,7 @@ const ROLE_LEVEL = { RESEARCHER: 1, MANAGER: 2, ADMIN: 3 } as const;
 
 function NotificationBell() {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { data: notifications = [] } = useQuery({
     queryKey: ["notifications"],
@@ -34,6 +35,13 @@ function NotificationBell() {
     mutationFn: (id: number) => api(`/notifications/${id}/read`, { method: "PATCH" }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["notifications"] }),
   });
+
+  // 알림이 가리키는 화면 — payload에 링크 대상 id가 들어 있다
+  function targetPath(n: Notification): string | null {
+    if (typeof n.payload.expense_id === "number") return `/expenses/${n.payload.expense_id}`;
+    if (typeof n.payload.report_id === "number") return `/reports/${n.payload.report_id}`;
+    return null;
+  }
 
   const MESSAGES: Record<string, string> = {
     expense_needs_review: "새 검토 대기 건이 있습니다",
@@ -66,7 +74,14 @@ function NotificationBell() {
             <button
               key={n.id}
               className="block w-full rounded-md px-2 py-2 text-left text-sm hover:bg-slate-50"
-              onClick={() => markRead.mutate(n.id)}
+              onClick={() => {
+                markRead.mutate(n.id);
+                const path = targetPath(n);
+                if (path) {
+                  setOpen(false);
+                  router.push(path);
+                }
+              }}
             >
               <p className="text-slate-800">{MESSAGES[n.type] ?? n.type}</p>
               <p className="text-xs text-slate-400">{formatDateTime(n.created_at)}</p>
