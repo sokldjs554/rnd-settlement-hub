@@ -29,7 +29,7 @@ services:
     dockerCommand: /app/start.sh
     envVars:
       - key: DATABASE_URL
-        sync: false # Neon 연결 문자열 (postgresql+psycopg://... 형식)
+        sync: false # Neon 연결 문자열 — 접두어는 앱이 psycopg로 정규화한다
       - key: SECRET_KEY
         generateValue: true
       - key: ANTHROPIC_API_KEY
