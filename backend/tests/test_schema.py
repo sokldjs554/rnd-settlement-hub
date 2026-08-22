@@ -140,3 +140,29 @@ def test_expense_cascade_deletes_children(db: Session) -> None:
     db.commit()
 
     assert db.query(AiRun).count() == 0
+
+
+class TestDatabaseUrlNormalization:
+    """관리형 Postgres가 주는 URL을 psycopg(v3)로 정규화하는지 확인한다.
+
+    배포 시 접두어를 손으로 바꾸는 단계를 없애기 위한 것 — 이게 깨지면
+    운영 환경에서 psycopg2를 찾다가 기동에 실패한다.
+    """
+
+    def test_bare_postgresql_scheme_gets_psycopg_driver(self) -> None:
+        from app.config import Settings
+
+        s = Settings(database_url="postgresql://u:p@host/db?sslmode=require")
+        assert s.database_url == "postgresql+psycopg://u:p@host/db?sslmode=require"
+
+    def test_legacy_postgres_scheme_is_normalized_too(self) -> None:
+        from app.config import Settings
+
+        s = Settings(database_url="postgres://u:p@host/db")
+        assert s.database_url == "postgresql+psycopg://u:p@host/db"
+
+    def test_explicit_driver_is_left_alone(self) -> None:
+        from app.config import Settings
+
+        url = "postgresql+asyncpg://u:p@host/db"
+        assert Settings(database_url=url).database_url == url

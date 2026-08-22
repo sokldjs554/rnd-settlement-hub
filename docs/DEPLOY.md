@@ -17,8 +17,9 @@
    - **리전은 AWS Asia Pacific 1 (Singapore)** — `render.yaml`이 백엔드를 같은
      `singapore` 리전에 배치하므로 DB도 여기에 둔다. 둘이 어긋나면 요청마다
      대륙을 왕복해 눈에 띄게 느려진다. 다른 리전을 쓰려면 양쪽을 함께 바꿀 것.
-2. SQLAlchemy 드라이버에 맞게 접두어를 바꾼다:
-   `postgresql://...` → `postgresql+psycopg://...` (sslmode 파라미터는 유지)
+2. 복사한 값을 그대로 쓰면 된다 — 앱이 기동 시 `postgres://`·`postgresql://`
+   접두어를 `postgresql+psycopg://`로 정규화한다(`backend/app/config.py`).
+   손으로 바꿔 넣어도 무방하다.
 
 ## 2. Render (Backend)
 

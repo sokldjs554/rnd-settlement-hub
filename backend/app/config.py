@@ -6,6 +6,7 @@
 
 from functools import lru_cache
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,6 +15,22 @@ class Settings(BaseSettings):
 
     # Database
     database_url: str = "postgresql+psycopg://dev:dev@localhost:5432/settlement_hub"
+
+    @field_validator("database_url")
+    @classmethod
+    def normalize_database_url(cls, v: str) -> str:
+        """드라이버가 지정되지 않은 URL을 psycopg(v3)로 고정한다.
+
+        관리형 Postgres(Neon·Render·Heroku 등)가 주는 연결 문자열은 보통
+        `postgres://` 또는 `postgresql://`이다. 이대로 두면 SQLAlchemy가 기본
+        드라이버로 psycopg2를 찾는데 이 프로젝트는 psycopg v3만 설치한다.
+        배포할 때마다 사람이 손으로 접두어를 바꾸는 단계를 없애려고 여기서 정규화한다.
+        `postgresql+asyncpg://`처럼 드라이버를 명시한 URL은 그대로 둔다.
+        """
+        for prefix in ("postgresql://", "postgres://"):
+            if v.startswith(prefix):
+                return "postgresql+psycopg://" + v[len(prefix) :]
+        return v
 
     # Auth (Phase 4에서 사용)
     secret_key: str = "change-me-in-production"
