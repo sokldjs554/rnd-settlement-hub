@@ -22,7 +22,7 @@ FastAPI + PostgreSQL + Next.js + Claude API로 만든 AI-Native 업무 자동화
 집행 등록을 직접 해보려면 [docs/samples/card-receipt.png](docs/samples/card-receipt.png)를
 증빙으로 쓰고 [docs/DEMO.md](docs/DEMO.md)의 입력값 표를 따라 하면 됩니다.
 
-![담당자 대시보드 — 검토 대기 건수·금액, AI 지표, 자동 검증 시간, 비목별 예산 소진, 상태별 현황, 월별 승인 금액, 제출→승인 리드타임](docs/images/dashboard.png)
+![담당자 대시보드 — 검토 대기 건수·금액, AI 추출 성공률·비목 제안 채택률, 자동 검증 시간(중앙값), 비목별 예산 소진, 상태별 현황](docs/images/dashboard.png)
 
 > 대시보드의 "AI 추출 성공률"은 **운영 호출이 실패 없이 완료된 비율**이다(호출 건수 병기).
 > 모델이 필드를 **정확히 읽는 비율(88%, 22/25)**은 별도 벤치마크로 잰다 → [docs/AI_EVAL.md](docs/AI_EVAL.md).
