@@ -7,6 +7,21 @@ FastAPI + PostgreSQL + Next.js + Claude API로 만든 AI-Native 업무 자동화
 집행 건을 제출하면 AI가 증빙을 구조화하고, 15개의 결정론적 룰이 규정 위반을 걸러내며,
 국세청 공공 API로 거래처 휴폐업을 검증한 뒤, 사람이 최종 승인합니다.
 
+## 🔗 Live Demo
+
+**https://rnd-settlement-hub.vercel.app**
+
+| 역할 | 계정 | 보이는 것 |
+|---|---|---|
+| 연구원 | `researcher@demo.kr` | 집행 등록·증빙 첨부·제출 |
+| 담당자 | `manager@demo.kr` | 검토·승인/반려·정산보고서·대시보드 |
+| 관리자 | `admin@demo.kr` | 위 전부 + 과제·예산 관리 |
+
+비밀번호 공통 `demo1234!` · 무료 서버(Vercel + Render free + Neon)라
+**유휴 후 첫 접속은 30초~1분** 걸릴 수 있습니다 — 로그인이 멈춘 듯해도 잠시 기다려 주세요.
+집행 등록을 직접 해보려면 [docs/samples/card-receipt.png](docs/samples/card-receipt.png)를
+증빙으로 쓰고 [docs/DEMO.md](docs/DEMO.md)의 입력값 표를 따라 하면 됩니다.
+
 ![담당자 대시보드 — 검토 대기, 비목별 예산 소진, 룰 위반 Top 5, AI 지표, 자동화 Before/After](docs/images/dashboard.png)
 
 > 대시보드의 "AI 추출 성공률"은 **운영 호출이 실패 없이 완료된 비율**이다(호출 건수 병기).
