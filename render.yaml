@@ -24,7 +24,9 @@ services:
     # Neon 프로젝트를 다른 리전에 만들었다면 여기도 같이 바꿔야 한다.
     region: singapore
     healthCheckPath: /health
-    dockerCommand: sh -c "alembic upgrade head && (python -m app.worker &) && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    # 명령을 인라인으로 적으면 플랫폼의 문자열 토큰화에 동작이 좌우된다(exit 127).
+    # 스크립트로 빼서 셸 해석을 이미지 안에서 하도록 고정한다.
+    dockerCommand: /app/start.sh
     envVars:
       - key: DATABASE_URL
         sync: false # Neon 연결 문자열 (postgresql+psycopg://... 형식)
