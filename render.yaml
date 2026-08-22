@@ -3,8 +3,14 @@
 # DB는 Neon(또는 Render Postgres)을 쓰고 DATABASE_URL을 환경변수로 주입한다.
 #
 # 구성 노트: API와 워커를 한 서비스에서 함께 실행한다.
-# 증빙 파일이 로컬 디스크(볼륨)에 저장되는 MVP 구조에서는 워커가 같은 디스크를
+# 증빙 파일이 로컬 디스크에 저장되는 MVP 구조에서는 워커가 같은 디스크를
 # 읽어야 하는데, Render의 disk는 서비스 간 공유가 안 되기 때문이다.
+#
+# free 플랜의 제약 두 가지를 그대로 받아들인 구성이다:
+# - persistent disk 불가 → 증빙 파일은 /tmp(휘발성)에 저장된다. 재배포·슬립 후
+#   증빙 "원본 보기"가 깨질 수 있다 — 데모 직전에 등록한 건은 문제없다.
+#   유료 전환 시: disk 블록을 되살리고 UPLOAD_DIR을 /var/data/uploads로.
+# - Shell 불가 → 시드는 로컬/Codespace에서 Neon으로 직접 실행한다 (docs/DEPLOY.md).
 # 규모가 커지면: 파일 저장을 S3로 교체(app/services/storage.py만 수정)한 뒤
 # 워커를 별도 type: worker 서비스로 분리한다. (README 한계점/향후 개선 참고)
 services:
@@ -30,8 +36,6 @@ services:
       - key: KASI_API_KEY
         sync: false
       - key: UPLOAD_DIR
-        value: /var/data/uploads
-    disk:
-      name: uploads
-      mountPath: /var/data/uploads
-      sizeGB: 1
+        value: /tmp/uploads # free 플랜은 disk 불가 — 휘발성 저장 (위 구성 노트 참고)
+      - key: COOKIE_SECURE
+        value: "true" # HTTPS 환경 — refresh 쿠키에 Secure 속성

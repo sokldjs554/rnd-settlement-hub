@@ -19,14 +19,25 @@
 
 ## 2. Render (Backend)
 
-1. https://render.com → New → **Blueprint** → 이 저장소 선택 (`render.yaml` 자동 인식)
+1. https://render.com → New → **Blueprint** → 이 저장소 선택 (`render.yaml` 자동 인식, main 브랜치)
 2. 환경변수 입력: `DATABASE_URL`(위 Neon 값), `ANTHROPIC_API_KEY`, `NTS_API_KEY`(선택), `KASI_API_KEY`(선택)
-3. 배포되면 시드 1회 실행: Render Shell에서 `python -m app.seed --demo`
-4. 헬스체크: `https://<서비스>.onrender.com/health`
+3. 배포 완료 후 헬스체크: `https://<서비스>.onrender.com/health`
+   (기동 시 `alembic upgrade head`가 자동 실행되므로 스키마는 이미 준비된 상태)
+4. **시드 1회 실행 — free 플랜은 Shell이 없으므로 로컬/Codespace에서 Neon으로 직접**:
+   ```bash
+   docker compose run --rm \
+     -e DATABASE_URL="postgresql+psycopg://<Neon 연결 문자열>" \
+     api python -m app.seed --demo
+   ```
 
 **왜 API와 워커가 한 서비스인가** — 증빙 파일이 로컬 디스크에 저장되는 MVP 구조에서
 워커가 같은 디스크를 읽어야 하는데 Render disk는 서비스 간 공유가 안 된다.
 파일 저장을 S3로 교체하면(`app/services/storage.py`만 수정) 워커를 분리할 수 있다.
+
+**free 플랜 제약과 대응** (`render.yaml` 구성 노트에도 명시):
+- persistent disk 불가 → 증빙 파일은 `/tmp`(휘발성). 재배포·슬립 후 기존 건의
+  "증빙 원본 보기"가 깨질 수 있다 — **데모 직전에 등록한 건은 영향 없다.**
+- Shell 불가 → 위처럼 시드를 밖에서 실행한다.
 
 ## 3. Vercel (Frontend)
 
@@ -48,7 +59,6 @@
 ## 운영 주의사항 (무료 티어 한계)
 
 - Render free는 유휴 시 슬립 → 첫 요청이 느리다 (데모 전에 미리 깨워둘 것)
-- refresh 쿠키는 `secure=False`로 개발 기본값이다 — 운영 HTTPS에서는
-  `backend/app/api/routes/auth.py`의 `_set_refresh_cookie`에서 `secure=True`로 바꿔야 한다.
-  (same-origin 프록시 구조라 `samesite`는 기본값 `lax` 그대로 두면 된다)
-- 파일(증빙)은 Render disk 1GB에 저장된다 — 장기 운영 시 S3 교체 권장
+- refresh 쿠키 Secure 속성은 환경변수 `COOKIE_SECURE`로 제어한다 — `render.yaml`이
+  `true`로 켜두므로 코드 수정이 필요 없다. (same-origin 프록시 구조라 `samesite`는 `lax`)
+- 증빙 파일은 휘발성 `/tmp`에 저장된다(free 플랜 제약) — 장기 운영 시 유료 disk 또는 S3

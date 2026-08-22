@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     # 파일 저장
     upload_dir: str = "./uploads"
 
+    # 운영(HTTPS) 배포에서 True로 — refresh 쿠키에 Secure 속성을 붙인다
+    cookie_secure: bool = False
+
 
 @lru_cache
 def get_settings() -> Settings:

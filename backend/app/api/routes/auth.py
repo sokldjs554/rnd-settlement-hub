@@ -24,8 +24,8 @@ def _set_refresh_cookie(response: Response, token: str) -> None:
         REFRESH_COOKIE,
         token,
         httponly=True,
-        samesite="lax",
-        secure=False,  # 운영(HTTPS) 배포 시 True — README 배포 섹션에서 다룸
+        samesite="lax",  # same-origin 프록시 구조라 lax로 충분
+        secure=get_settings().cookie_secure,  # 운영(HTTPS)에서 COOKIE_SECURE=true
         max_age=get_settings().refresh_token_expire_days * 24 * 3600,
         path="/api/v1/auth",
     )
