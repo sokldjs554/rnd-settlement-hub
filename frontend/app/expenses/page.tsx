@@ -21,7 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 function buildQuery(params: Record<string, string | number | undefined>): string {
   const sp = new URLSearchParams();
@@ -34,12 +34,41 @@ function buildQuery(params: Record<string, string | number | undefined>): string
 function ExpenseListInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [page, setPage] = useState(1);
-  const [q, setQ] = useState("");
-  const [qInput, setQInput] = useState("");
-  const [status, setStatus] = useState<string>(searchParams.get("status") ?? "");
-  const [projectId, setProjectId] = useState("");
-  const [sort, setSort] = useState("-created_at");
+
+  // 목록 상태(페이지·필터·정렬)의 단일 출처는 URL이다. useState에 두면 상세 화면에
+  // 다녀올 때 목록이 새로 마운트되면서 초기값으로 돌아간다 — 2페이지에서 한 건을 열고
+  // 뒤로가기 하면 1페이지가 되던 문제.
+  const page = Math.max(1, Number(searchParams.get("page")) || 1);
+  const q = searchParams.get("q") ?? "";
+  const status = searchParams.get("status") ?? "";
+  const projectId = searchParams.get("project_id") ?? "";
+  const sort = searchParams.get("sort") ?? "-created_at";
+
+  // 검색어 입력창만 로컬 상태다(타이핑 중에는 URL을 건드리지 않는다).
+  // 뒤로가기로 q가 바뀌어 들어오면 입력창도 따라간다.
+  const [qInput, setQInput] = useState(q);
+  useEffect(() => setQInput(q), [q]);
+
+  /**
+   * URL 쿼리를 갱신한다. 명시하지 않은 키는 유지되고, 빈 값은 URL에서 지운다.
+   *
+   * - 필터·정렬 변경은 replace: 조건을 다듬는 행위라 히스토리에 쌓지 않는다
+   *   (쌓으면 뒤로가기가 필터 조작을 한 단계씩 되짚게 된다).
+   * - 페이지 이동은 push: 사용자가 뒤로가기로 되돌릴 것을 기대하는 이동이다.
+   */
+  const updateParams = (
+    patch: Record<string, string | number | undefined>,
+    { push = false } = {},
+  ) => {
+    const sp = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(patch)) {
+      if (value === undefined || value === "") sp.delete(key);
+      else sp.set(key, String(value));
+    }
+    const qs = sp.toString();
+    if (push) router.push(qs ? `/expenses?${qs}` : "/expenses");
+    else router.replace(qs ? `/expenses?${qs}` : "/expenses");
+  };
 
   const { data: projects } = useQuery({
     queryKey: ["projects"],
@@ -68,8 +97,7 @@ function ExpenseListInner() {
         className="flex flex-wrap gap-2"
         onSubmit={(e) => {
           e.preventDefault();
-          setQ(qInput);
-          setPage(1);
+          updateParams({ q: qInput, page: undefined });
         }}
       >
         <Input
@@ -81,10 +109,7 @@ function ExpenseListInner() {
         <Select
           className="w-36"
           value={status}
-          onChange={(e) => {
-            setStatus(e.target.value);
-            setPage(1);
-          }}
+          onChange={(e) => updateParams({ status: e.target.value, page: undefined })}
           aria-label="상태 필터"
         >
           <option value="">모든 상태</option>
@@ -97,10 +122,7 @@ function ExpenseListInner() {
         <Select
           className="w-56"
           value={projectId}
-          onChange={(e) => {
-            setProjectId(e.target.value);
-            setPage(1);
-          }}
+          onChange={(e) => updateParams({ project_id: e.target.value, page: undefined })}
           aria-label="과제 필터"
         >
           <option value="">모든 과제</option>
@@ -113,7 +135,7 @@ function ExpenseListInner() {
         <Select
           className="w-40"
           value={sort}
-          onChange={(e) => setSort(e.target.value)}
+          onChange={(e) => updateParams({ sort: e.target.value, page: undefined })}
           aria-label="정렬"
         >
           <option value="-created_at">최신 등록순</option>
@@ -184,7 +206,7 @@ function ExpenseListInner() {
               <Button
                 variant="secondary"
                 disabled={page <= 1}
-                onClick={() => setPage((p) => p - 1)}
+                onClick={() => updateParams({ page: page - 1 }, { push: true })}
               >
                 이전
               </Button>
@@ -194,7 +216,7 @@ function ExpenseListInner() {
               <Button
                 variant="secondary"
                 disabled={page >= totalPages}
-                onClick={() => setPage((p) => p + 1)}
+                onClick={() => updateParams({ page: page + 1 }, { push: true })}
               >
                 다음
               </Button>
