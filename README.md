@@ -18,7 +18,7 @@ FastAPI + PostgreSQL + Next.js + Claude API로 만든 AI-Native 업무 자동화
 | 관리자 | `admin@demo.kr` | 위 전부 + 과제·예산 관리 |
 
 비밀번호 공통 `demo1234!` · 무료 서버(Vercel + Render free + Neon)라
-**한동안 접속이 없으면 첫 로딩에 30초~1분 — 로그인이 멈춘 듯해도 잠시 기다려 주세요.
+**한동안 접속이 없으면 첫 로딩에 30초~1분** — 로그인이 멈춘 듯해도 잠시 기다려 주세요.
 집행 등록을 직접 해보려면 [docs/samples/card-receipt.png](docs/samples/card-receipt.png)를
 증빙으로 쓰고 [docs/DEMO.md](docs/DEMO.md)의 입력값 표를 따라 하면 됩니다.
 
