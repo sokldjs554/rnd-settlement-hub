@@ -18,7 +18,7 @@ FastAPI + PostgreSQL + Next.js + Claude API로 만든 AI-Native 업무 자동화
 | 관리자 | `admin@demo.kr` | 위 전부 + 과제·예산 관리 |
 
 비밀번호 공통 `demo1234!` · 무료 서버(Vercel + Render free + Neon)라
-**한동안 접속이 없으면 첫 로딩에 30초~1분** — 로그인이 멈춘 듯해도 잠시 기다려 주세요.
+**한동안 접속이 없으면 첫 로딩에 30초~1분 — 로그인이 멈춘 듯해도 잠시 기다려 주세요.**
 집행 등록을 직접 해보려면 [docs/samples/card-receipt.png](docs/samples/card-receipt.png)를
 증빙으로 쓰고 [docs/DEMO.md](docs/DEMO.md)의 입력값 표를 따라 하면 됩니다.
 
@@ -387,9 +387,9 @@ cd frontend && npm install && npm run dev    # 터미널 3 → http://localhost:
 ## 10. 테스트
 
 ```bash
-cd backend && pytest             # 76 tests: 룰 엔진 단위·API·DB 통합(동시성 race 포함)
+cd backend && pytest             # 90 tests: 룰 엔진 단위·API·DB 통합(동시성 race 포함)
 cd frontend && npm test          # 7 tests: 유틸·컴포넌트 (Vitest)
-bash e2e/run.sh                  # Playwright: 등록→파이프라인→승인→보고서→대시보드 전체 1본
+bash e2e/run.sh                  # Playwright 4건: 전체 여정 · 반려 재제출 · 목록 상태 유지
 ANTHROPIC_API_KEY=... pytest -m golden   # 실 API 프롬프트 회귀 (opt-in)
 ```
 
