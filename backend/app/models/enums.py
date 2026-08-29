@@ -113,3 +113,17 @@ class AutomationStatus(enum.StrEnum):
     RUNNING = "RUNNING"
     SUCCEEDED = "SUCCEEDED"
     FAILED = "FAILED"
+
+
+class CardMatchStatus(enum.StrEnum):
+    """연구비카드 사용내역 대사 결과.
+
+    판정 기준은 services/reconciliation.py의 match_lines()에 있다.
+    MATCHED_NEAR와 CANDIDATE는 확정이 아니라 '사람이 볼 후보'다 —
+    룰 엔진의 WARN과 같은 태도로, 기계가 단정하지 않고 근거를 남긴다.
+    """
+
+    MATCHED = "MATCHED"  # 사업자번호·금액·일자 전부 일치
+    MATCHED_NEAR = "MATCHED_NEAR"  # 사업자번호·금액 일치, 승인일-집행일 차이 허용 범위 내
+    CANDIDATE = "CANDIDATE"  # 금액·일자만 일치(사업자번호 결측) — 수기 확인 필요
+    UNMATCHED = "UNMATCHED"  # 대응하는 집행 건 없음 — 미등록 집행 의심

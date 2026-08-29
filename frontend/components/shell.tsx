@@ -7,7 +7,7 @@ import { useCurrentUser } from "@/lib/providers";
 import type { Notification } from "@/lib/types";
 import { formatDateTime } from "@/lib/format";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Bell, FileBarChart2, FolderKanban, LayoutDashboard, LogOut, ReceiptText } from "lucide-react";
+import { Bell, CreditCard, FileBarChart2, FolderKanban, LayoutDashboard, LogOut, ReceiptText } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,6 +18,7 @@ const NAV = [
   { href: "/expenses", label: "집행 건", icon: ReceiptText, minRole: "RESEARCHER" },
   { href: "/projects", label: "과제·예산", icon: FolderKanban, minRole: "RESEARCHER" },
   { href: "/reports", label: "정산보고서", icon: FileBarChart2, minRole: "MANAGER" },
+  { href: "/reconciliation", label: "카드 대사", icon: CreditCard, minRole: "MANAGER" },
 ] as const;
 
 const ROLE_LEVEL = { RESEARCHER: 1, MANAGER: 2, ADMIN: 3 } as const;

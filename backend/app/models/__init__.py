@@ -9,6 +9,7 @@ from app.models.expense import Evidence, Expense
 from app.models.holiday import Holiday
 from app.models.notification import Notification
 from app.models.project import Budget, Project
+from app.models.reconciliation import CardReconciliation, CardReconciliationLine
 from app.models.report import Report
 from app.models.user import User
 from app.models.validation import ValidationResult, VendorCheck
@@ -20,6 +21,8 @@ __all__ = [
     "AutomationRun",
     "Base",
     "Budget",
+    "CardReconciliation",
+    "CardReconciliationLine",
     "Evidence",
     "Expense",
     "Holiday",

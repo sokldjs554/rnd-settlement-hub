@@ -218,3 +218,47 @@ export interface Notification {
 export interface ApiErrorBody {
   error: { code: string; message: string; detail?: unknown };
 }
+
+export type CardMatchStatus = "MATCHED" | "MATCHED_NEAR" | "CANDIDATE" | "UNMATCHED";
+
+export interface Reconciliation {
+  id: number;
+  project_id: number;
+  uploaded_by: number;
+  file_name: string;
+  total_lines: number;
+  matched_count: number;
+  matched_near_count: number;
+  candidate_count: number;
+  unmatched_count: number;
+  created_at: string;
+}
+
+export interface ReconciliationLine {
+  id: number;
+  row_no: number;
+  approved_on: string;
+  merchant_name: string;
+  merchant_biz_no: string | null;
+  amount: string;
+  approval_no: string | null;
+  card_no_masked: string | null;
+  match_status: CardMatchStatus;
+  matched_expense_id: number | null;
+  note: string | null;
+}
+
+export interface ReconciliationUnmatchedExpense {
+  id: number;
+  title: string;
+  vendor_name: string;
+  amount: string;
+  spent_at: string;
+  category: BudgetCategory;
+  status: ExpenseStatus;
+}
+
+export interface ReconciliationDetail extends Reconciliation {
+  lines: ReconciliationLine[];
+  unmatched_expenses: ReconciliationUnmatchedExpense[];
+}
